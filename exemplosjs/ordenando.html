@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const lista = [];
+
+        function mostrarLista() {
+            const valores = document.getElementById("valores");
+            valores.innerHTML = "";
+            lista.forEach(valor => {
+                const node = document.createElement("li");
+                const textNode = document.createTextNode(valor);
+                node.appendChild(textNode);
+                valores.appendChild(node);
+            })
+        }
+
+        function add() {
+            const valor = document.getElementById("valor").value;
+
+            if (valor !== "") {
+                lista.push(eval(valor));
+
+                mostrarLista();
+
+                document.getElementById("valor").value = "";
+            }
+        }
+
+        function ordenar() {
+            const selectedIndex = document.getElementById("selecionar").value;
+
+            switch (selectedIndex) {
+                case "bubbleSort":
+                    console.log(`bubble executado`)
+                    bubbleSort(lista);
+                    break;
+                case "selectionSort":
+                    console.log(`selection executado`)
+                    selectionSort(lista);
+                    break;
+                case "quickSort":
+                    console.log(`quick executado`)
+                    quickSort(lista, 0, lista.length - 1);
+                    break;
+                default:
+                    break;
+            }
+            mostrarLista();
+        }
+
+        function misturar() {
+            const valores = document.getElementById("valores");
+
+        }
+    </script>
+    <script src="ordenando.js"></script>
+</head>
+<body>
+    <input type="number" id="valor">
+    <button onclick="add()">Adicionar</button>
+    <button onclick="ordenar()">Ordernar</button>
+    <button onclick="misturar()">Misturar</button>
+    <select id="selecionar">
+        <option value="bubbleSort" selected>Bubble Sort</option>
+        <option value="selectionSort">Selection Sort</option>
+        <option value="quickSort">Quick Sort</option>
+    </select>
+    <ul id="valores"></ul>
+    
+</body>
+</html>
