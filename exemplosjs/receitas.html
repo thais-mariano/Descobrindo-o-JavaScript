@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Receitas</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/receitas.css" rel="stylesheet">
+    <script>
+        const lista = [];
+        function getListaIngredientes(receita) {
+            const parentNode = document.createElement("ul");
+            const ingredientes = receita.ingredientes;
+
+            ingredientes.map(
+                ingrediente => {
+                    const node = document.createElement("li");
+                    const textNode = document.createTextNode(ingrediente);
+                    node.appendChild(textNode);
+                    parentNode.appendChild(node);
+                }
+            );
+            return parentNode;
+        }
+
+        function getCard(receita) {
+            const parentDiv = document.createElement("div");
+            const bodyDiv = document.createElement("div");
+            const cardTextDiv = document.createElement("div");
+
+            const img = document.createElement("img");
+            const h2 = document.createElement("h2");
+            const hr = document.createElement("hr");
+            const p = document.createElement("p");
+
+            const h2Text = document.createTextNode(receita.titulo);
+            const pText = document.createTextNode(receita.preparo);
+
+            parentDiv.classList.add("card", "cardWidth");
+            bodyDiv.classList.add("card-body");
+            h2.classList.add("card-title");
+            cardTextDiv.classList.add("card-text");
+            
+            img.src = `../${receita.imagem}`;
+            img.alt = receita.titulo;
+            img.classList.add("card-img-top");
+            
+            parentDiv.appendChild(img);
+            parentDiv.appendChild(bodyDiv);
+            h2.appendChild(h2Text);
+            bodyDiv.appendChild(h2);
+            bodyDiv.appendChild(getListaIngredientes(receita));
+            bodyDiv.appendChild(hr);
+            bodyDiv.appendChild(cardTextDiv);
+
+            p.appendChild(pText);
+            bodyDiv.appendChild(p);
+
+            return parentDiv;   
+        }
+
+        function preencheCatalogo() {
+            const pnlCatalogo = document.getElementById("pnlCatalogo");
+            fetch('receitas.json')
+                .then(response => response.json())
+                .then(
+                    data => {
+                        data.receitas.forEach(receita => {
+                            const card = getCard(receita);
+                            pnlCatalogo.appendChild(card);
+                        });
+                    }
+                )
+                .catch(error => {
+                    console.error("Houve um problema: ", error);
+                });
+        }
+
+
+    </script>
+</head>
+<body class="bg-warning" onload="preencheCatalogo()">
+    <section class="container-fluid"> 
+        <div class="flex-wrap receitasContent" id="pnlCatalogo"></div>
+    </section>
+</body>
+</html>
