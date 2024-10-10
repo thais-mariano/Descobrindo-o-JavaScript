@@ -1,0 +1,10 @@
+.cardWidth {
+    width: 250px;
+}
+
+.receitasContent {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    margin: 5% 0;
+}
